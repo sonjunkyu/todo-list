@@ -1,0 +1,461 @@
+:root {
+    --background-color: #f8f9fa;
+    --text-color: #212529;
+    --muted-color: #6c757d;
+
+    --primary-color: #87CEEB;
+    --primary-hover-color: #6BBBD4;
+
+    --card-bg-color: #ffffff;
+    --card-border-color: #dee2e6;
+    --input-border-color: #ced4da;
+
+    --danger-color: #dc3545;
+    --danger-hover-color: #c82333;
+
+    --radius: 12px;
+    --shadow: 0 10px 28px rgba(2,6,23,.08);
+    --ring: rgba(135, 206, 235, 0.35);
+
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans KR", "Apple SD Gothic Neo",
+    "Malgun Gothic", sans-serif;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+    font-family: var(--font-family);
+    background:
+            radial-gradient(1100px 700px at 10% -10%, rgba(91,140,255,.08), transparent 60%),
+            radial-gradient(900px 600px at 120% 0%, rgba(91,140,255,.06), transparent 55%),
+            var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    -webkit-font-smoothing: antialiased;
+}
+
+body > main {
+    width: min(560px, calc(100% - 32px));
+    margin: 3rem auto;
+    display: grid;
+    gap: 1.25rem;
+}
+
+#root {
+    width: 100%;
+    max-width: 960px;
+}
+
+header{
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: 0.75rem 0;
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid var(--card-border-color);
+    backdrop-filter: saturate(160%) blur(8px);
+    background: color-mix(in oklab, var(--background-color) 88%, transparent);
+
+    display: grid;
+    grid-template-columns: 1fr auto; 
+    align-items: center;
+    column-gap: 12px;
+}
+header h1{
+    margin: 0;
+    font-size: clamp(1.5rem, 2vw, 2rem);
+    line-height: 1.2;
+    overflow-wrap: anywhere; 
+}
+
+header nav{
+    display: flex; 
+    align-items: center;
+}
+@media (max-width: 480px){
+    header{ row-gap: 8px; }
+}
+header a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    border: 1px solid var(--card-border-color);
+    padding: 0.5rem 0.75rem;
+    border-radius: 10px;
+    transition: box-shadow .2s ease, border-color .2s ease, color .2s ease, background-color .2s ease;
+}
+header a:hover,
+header a:focus-visible {
+    color: #fff;
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px var(--ring);
+    outline: none;
+}
+
+#root main {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+}
+
+h2 {
+    font-size: 1.25rem;
+    margin: 0 0 .75rem;
+    border-bottom: 1px solid var(--card-border-color);
+    padding-bottom: .5rem;
+}
+
+form,
+#createForm {
+    display: grid;
+    gap: 1rem;
+    background: var(--card-bg-color);
+    border: 1px solid var(--card-border-color);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    box-shadow: var(--shadow);
+}
+
+label { display: grid; gap: .5rem; font-weight: 600; }
+
+input, textarea, button {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.75rem;
+    border: 1px solid var(--input-border-color);
+    border-radius: 0.75rem;
+    transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
+    background: #fff;
+}
+
+input:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px var(--ring);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 96px;
+}
+
+input[type="date"] { accent-color: var(--primary-color); }
+
+.card {
+    background: var(--card-bg-color);
+    border: 1px solid var(--card-border-color);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+.actions {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+.actions .btn {
+    width: 140px;
+}
+
+.btn {
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.75rem;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: background-color .2s ease, border-color .2s ease, color .2s ease, box-shadow .2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #fff;
+}
+.btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px var(--ring);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+.btn-primary:hover {
+    background-color: var(--primary-hover-color);
+    border-color: var(--primary-hover-color);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    border-color: var(--input-border-color);
+    color: var(--text-color);
+}
+.btn-secondary:hover {
+    background-color: color-mix(in oklab, var(--muted-color) 8%, transparent);
+    border-color: color-mix(in oklab, var(--muted-color) 40%, transparent);
+}
+
+button[type="submit"] {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+#list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 1rem;
+}
+
+#list:empty::before {
+    content: "아직 할 일이 없어요. 상단에서 새로운 Todo를 추가해 보세요.";
+    display: block;
+    padding: 1.25rem;
+    border: 1px dashed var(--card-border-color);
+    border-radius: var(--radius);
+    color: var(--muted-color);
+    background: var(--card-bg-color);
+}
+
+#list li {
+    background-color: var(--card-bg-color);
+    border: 1px solid var(--card-border-color);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    display: grid; 
+    gap: 1rem;
+    box-shadow: var(--shadow);
+    transition: transform .12s ease, box-shadow .2s ease;
+    animation: itemIn .22s ease both;
+}
+#list li:hover {
+    transform: translateY(-1px);
+}
+
+@keyframes itemIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+#list li .todo-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+#list li .toggle {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+#list li h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+#list li .description {
+    margin: 0;
+    color: var(--muted-color);
+    padding-left: calc(20px + 0.75rem); 
+}
+
+#list li .meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.85rem;
+    color: var(--muted-color);
+    border-top: 1px solid var(--card-border-color);
+    padding-top: 1rem;
+}
+
+#list li .meta input[type="date"] {
+    border-radius: 6px;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--input-border-color);
+    max-width: 180px;
+}
+
+#list li .actions {
+    display: flex;
+    justify-content: flex-end; 
+    gap: 0.5rem;
+    border-top: 1px solid var(--card-border-color);
+    padding-top: 1rem;
+}
+
+#list li .actions button {
+    font-size: 0.85rem;
+    padding: 0.45rem 0.8rem;
+    border-radius: 8px;
+    border: 1px solid var(--input-border-color);
+    background-color: transparent;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+#list li .actions button.edit {
+    color: var(--primary-color);
+}
+#list li .actions button.edit:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #fff;
+}
+
+#list li .actions button.delete {
+    color: var(--danger-color);
+}
+#list li .actions button.delete:hover {
+    background-color: var(--danger-color);
+    border-color: var(--danger-color);
+    color: #fff;
+}
+
+
+#list li.done .todo-header h3,
+#list li.done .description {
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+#list li > div + div {
+    border-top: 1px solid color-mix(in oklab, var(--card-border-color) 65%, transparent);
+    padding-top: 8px;
+}
+
+@media (max-width: 768px) {
+    #root main {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
+    body > main { margin: 2.25rem auto; }
+    header { padding: .6rem 0; }
+    header a { padding: .45rem .65rem; }
+    button[type="submit"] { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+}
+
+
+.auth-page body {
+    background: #e9ecef; 
+}
+
+.auth-page main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 1rem;
+}
+
+.auth-card {
+    background: #ffffff;
+    padding: 2rem 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid #dee2e6;
+    width: 100%;
+    max-width: 400px;
+    display: grid;
+    gap: 1.5rem;
+}
+
+.auth-card h1 {
+    text-align: center;
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0;
+    color: #212529;
+}
+
+.auth-card .form-group {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.auth-card .form-group label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #495057;
+}
+
+.auth-card input {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.auth-card input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px var(--ring);
+}
+
+.auth-card .actions {
+    display: grid;
+    gap: 1rem;
+    text-align: center;
+    margin-top: 0.5rem;
+}
+
+.auth-card .btn-primary {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    font-size: 1rem;
+}
+
+.auth-card .text-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.auth-card .text-link:hover {
+    color: var(--primary-hover-color);
+    text-decoration: underline;
+}
+
+.message {
+    text-align: center;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.message.success {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.message.error {
+    background-color: #f8d7da;
+    color: #842029;
+}

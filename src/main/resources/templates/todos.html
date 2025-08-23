@@ -1,0 +1,35 @@
+<!doctype html><html lang="ko"><head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>내 Todo</title>
+    <link rel="stylesheet" href="/styles.css">
+</head><body>
+<div id="root">
+<header>
+    <h1>Todo list</h1>
+    <nav><a href="/logout">로그아웃</a></nav>
+</header>
+<main>
+    <section id="create">
+        <form id="createForm">
+            <h2>Todo 생성</h2>
+            <input type="hidden" id="editId">
+            <input id="title" placeholder="제목" required maxlength="100">
+            <textarea id="description" placeholder="설명"></textarea>
+            <label>마감일 <input type="date" id="dueDate" required></label>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">추가</button>
+            </div>
+        </form>
+    </section>
+    <section>
+        <h2>목록</h2>
+        <ul id="list"></ul>
+    </section>
+</main>
+</div>
+<script src="/app.js"></script>
+<script>
+    const today = new Date().toISOString().slice(0,10);
+    document.getElementById('dueDate').min = today;
+</script>
+</body></html>

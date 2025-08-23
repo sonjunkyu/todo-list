@@ -1,0 +1,51 @@
+<!doctype html><html lang="ko"><head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="/styles.css">
+</head><body class="auth-page">
+<main>
+    <form id="signupForm" class="auth-card">
+        <h1>회원가입</h1>
+        <div class="form-group">
+            <label for="id">ID</label>
+            <input id="id" required>
+        </div>
+        <div class="form-group">
+            <label for="name">이름</label>
+            <input id="name" required>
+        </div>
+        <div class="form-group">
+            <label for="password">비밀번호</label>
+            <input type="password" id="password" required>
+        </div>
+
+        <div class="actions">
+            <button type="submit" class="btn btn-primary">가입</button>
+            <a href="/login" class="text-link">로그인</a>
+        </div>
+        <p id="msg"></p>
+    </form>
+</main>
+
+<script>
+    document.getElementById('signupForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const body = {
+            id: document.getElementById('id').value.trim(),
+            name: document.getElementById('name').value.trim(),
+            password: document.getElementById('password').value
+        };
+        const res = await fetch('/api/auth/signup', {
+            method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)
+        });
+        const msgEl = document.getElementById('msg');
+        if (res.ok) {
+            msgEl.textContent = '가입 성공! 로그인 해주세요.';
+            msgEl.className = 'message success';
+        } else {
+            msgEl.textContent = '가입 실패: ID가 중복되었거나 다른 오류가 발생했습니다.';
+            msgEl.className = 'message error';
+        }
+    });
+</script>
+</body></html>
