@@ -47,15 +47,15 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                                                .requestMatchers("/signup", "/login", "/", "/css/**", "/js/**", "/images/**").permitAll()
-                        .requestMatchers("/todos.html", "/api/todos/**").authenticated()
-                        .anyRequest().permitAll()
+                                                .requestMatchers("/signup", "/login", "/", "/styles.css", "/app.js", "/images/**").permitAll()
+                        .requestMatchers("/todos", "/todos.html", "/api/todos/**").authenticated()
+                        .anyRequest().authenticated()
                 )
                 .userDetailsService(memberDetailsService)
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
-                        .usernameParameter("id") // HTML input name="id"
+                        .usernameParameter("id")
                         .passwordParameter("password")
                         .successHandler((req, res, auth) -> {
                             String loginId = auth.getName();
