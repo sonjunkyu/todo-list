@@ -1,10 +1,10 @@
-<!doctype html><html lang="ko"><head>
+<!doctype html><html lang="ko" xmlns:th="http://www.thymeleaf.org"><head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
     <title>로그인</title>
     <link rel="stylesheet" href="/styles.css">
 </head><body class="auth-page">
 <main>
-    <form method="post" action="/login" id="loginForm" class="auth-card">
+    <form method="post" th:action="@{/login}" id="loginForm" class="auth-card">
         <h1>로그인</h1>
         <p id="login-error" class="message error" style="display: none;"></p>
         <div class="form-group">

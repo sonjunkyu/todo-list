@@ -1,12 +1,18 @@
-<!doctype html><html lang="ko"><head>
+<!doctype html><html lang="ko" xmlns:th="http://www.thymeleaf.org"><head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>내 Todo</title>
     <link rel="stylesheet" href="/styles.css">
 </head><body>
 <div id="root">
 <header>
     <h1>Todo list</h1>
-    <nav><a href="/logout">로그아웃</a></nav>
+    <nav>
+        <form th:action="@{/logout}" method="post" style="display: inline; background: transparent;">
+            <button type="submit" class="link-button">로그아웃</button>
+        </form>
+    </nav>
 </header>
 <main>
     <section id="create">
