@@ -8,7 +8,11 @@
 <div id="root">
 <header>
     <h1>Todo list</h1>
-    <nav><a href="/logout">로그아웃</a></nav>
+    <nav>
+        <form th:action="@{/logout}" method="post" style="display: inline; background: transparent;">
+            <button type="submit" class="link-button">로그아웃</button>
+        </form>
+    </nav>
 </header>
 <main>
     <section id="create">
