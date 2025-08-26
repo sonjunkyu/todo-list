@@ -1,5 +1,7 @@
-<!doctype html><html lang="ko"><head>
+<!doctype html><html lang="ko" xmlns:th="http://www.thymeleaf.org"><head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>회원가입</title>
     <link rel="stylesheet" href="/styles.css">
 </head><body class="auth-page">
@@ -30,13 +32,20 @@
 <script>
     document.getElementById('signupForm').addEventListener('submit', async (e) => {
         e.preventDefault();
+        const token = document.querySelector('meta[name="_csrf"]').content;
+        const header = document.querySelector('meta[name="_csrf_header"]').content;
         const body = {
             id: document.getElementById('id').value.trim(),
             name: document.getElementById('name').value.trim(),
             password: document.getElementById('password').value
         };
         const res = await fetch('/api/auth/signup', {
-            method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                [header]: token
+            },
+            body: JSON.stringify(body)
         });
         const msgEl = document.getElementById('msg');
         if (res.ok) {

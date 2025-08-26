@@ -2,12 +2,36 @@ const API_URL = '/api/todos';
 const form = document.getElementById('createForm');
 const list = document.getElementById('list');
 
+const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+
+async function apiFetch(url, options = {}) {
+    const headers = {
+        'Content-Type': 'application/json',
+        [csrfHeader]: csrfToken,
+        ...options.headers,
+    };
+    const response = await fetch(url, { ...options, headers });
+
+    if (!response.ok) {
+        if (response.status === 401) {
+            location.href = '/login';
+        }
+        throw new Error(`API request failed with status ${response.status}`);
+    }
+
+    if (response.status === 204) {
+        return null;
+    }
+    return response.json();
+}
+
 function renderList(todos) {
     if (!list) return;
     list.innerHTML = '';
     todos.forEach(todo => {
         const li = document.createElement('li');
-        // Store the raw todo data on the element for easy access
+
         li.dataset.todo = JSON.stringify(todo);
         li.className = todo.completed ? 'done' : '';
 
@@ -69,13 +93,10 @@ function startEditMode(todo) {
 
 async function fetchTodos() {
     try {
-        const res = await fetch(API_URL);
-        if (!res.ok) {
-            if (res.status === 401) location.href = '/login';
-            throw new Error('Failed to fetch todos');
+        const todos = await apiFetch(API_URL);
+        if (todos) {
+            renderList(todos);
         }
-        const todos = await res.json();
-        renderList(todos);
     } catch (error) {
         console.error(error);
     }
@@ -94,15 +115,12 @@ async function handleFormSubmit(e) {
     const method = editId ? 'PATCH' : 'POST';
 
     try {
-        const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-        if (res.ok) {
-            resetForm();
-            await fetchTodos();
-        } else {
-            alert(`Failed to ${editId ? 'update' : 'create'} todo`);
-        }
+        await apiFetch(url, { method, body: JSON.stringify(body) });
+        resetForm();
+        await fetchTodos();
     } catch (error) {
         console.error(error);
+        alert(`Failed to ${editId ? 'update' : 'create'} todo`);
     }
 }
 
@@ -119,13 +137,13 @@ function handleListClick(e) {
 
     if (target.classList.contains('delete')) {
         if (confirm('정말 삭제하시겠습니까?')) {
-            fetch(`${API_URL}/${todo.id}`, { method: 'DELETE' })
-                .then(res => {
-                    if (res.ok) {
-                        li.remove(); // Optimistic update
-                    } else {
-                        alert('삭제 실패');
-                    }
+            apiFetch(`${API_URL}/${todo.id}`, { method: 'DELETE' })
+                .then(() => {
+                    li.remove(); // Optimistic update
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('삭제 실패');
                 });
         }
     }
@@ -144,24 +162,19 @@ async function handleListChange(e) {
     } else if (target.classList.contains('due')) {
         body.dueDate = target.value;
     } else {
-        return; // Not a relevant change
+        return;
     }
 
     try {
-        const res = await fetch(`${API_URL}/${todo.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-        if (res.ok) {
-            // A full re-fetch is a bit heavy, let's update the data in place
-            const updatedTodo = await res.json();
-            li.dataset.todo = JSON.stringify(updatedTodo);
-            li.className = updatedTodo.completed ? 'done' : '';
-        } else {
-            alert('업데이트 실패');
-            // Revert optimistic change if needed
-            if (body.completed !== undefined) target.checked = !target.checked;
-            if (body.dueDate !== undefined) target.value = todo.dueDate;
-        }
+        const updatedTodo = await apiFetch(`${API_URL}/${todo.id}`, { method: 'PATCH', body: JSON.stringify(body) });
+        li.dataset.todo = JSON.stringify(updatedTodo);
+        li.className = updatedTodo.completed ? 'done' : '';
     } catch (error) {
         console.error(error);
+        alert('업데이트 실패');
+
+        if (body.completed !== undefined) target.checked = !target.checked;
+        if (body.dueDate !== undefined) target.value = todo.dueDate;
     }
 }
 
