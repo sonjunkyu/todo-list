@@ -8,12 +8,9 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -21,20 +18,15 @@ public class SecurityConfig {
     private final MemberDetailsService memberDetailsService;
     private MemberService memberService;
 
+    public static final String SESSION_KEY = "LOGIN_MEMBER";
+
     public SecurityConfig(MemberDetailsService memberDetailsService) {
         this.memberDetailsService = memberDetailsService;
     }
 
     @Autowired
-    public void setMemberService(@Lazy MemberService memberService) {
+    public void setMemberService(MemberService memberService) {
         this.memberService = memberService;
-    }
-
-    public static final String SESSION_KEY = "LOGIN_MEMBER";
-
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
     @Bean

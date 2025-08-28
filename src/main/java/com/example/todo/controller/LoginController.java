@@ -2,9 +2,8 @@ package com.example.todo.controller;
 
 import com.example.todo.domain.Member;
 import com.example.todo.dto.MemberDto;
+import com.example.todo.dto.SignupDto;
 import com.example.todo.service.MemberService;
-import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +15,8 @@ public class LoginController {
     private final MemberService memberService;
 
     @PostMapping("/signup")
-    public ResponseEntity<MemberDto> signup(@RequestBody SignupReq req) {
-        Member member = memberService.register(req.id, req.name, req.password);
+    public ResponseEntity<MemberDto> signup(@RequestBody SignupDto req) {
+        Member member = memberService.register(req.getId(), req.getName(), req.getPassword());
         return ResponseEntity.ok(memberService.toDto(member));
     }
 
@@ -30,18 +29,5 @@ public class LoginController {
         } else {
             return ResponseEntity.ok(me);
         }
-    }
-
-    // 회원가입 요청을 담은 DTO
-    @Data
-    static class SignupReq {
-        @NotBlank
-        public String id;
-
-        @NotBlank
-        public String name;
-
-        @NotBlank
-        public String password;
     }
 }
